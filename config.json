@@ -1,0 +1,11 @@
+{
+  "dataset_build":
+  {
+    "raw_files_folder": "/content/drive/MyDrive/Colab Notebooks/Spam_Detector/Enron_raw_data/raw_files",
+    "ham_files":
+    ["beck-s.tar.gz", "lokay-m.tar.gz", "kaminski-v.tar.gz", "farmer-d.tar.gz",
+      "kitchen-l.tar.gz",   "williams-w3.tar.gz"],
+    "spam_files": [ "BG.tar.gz", "GP.tar.gz", "SH.tar.gz"],
+    "res_dataset_folder_name": ""
+  }
+}
