@@ -3,14 +3,14 @@ import shutil
 import tarfile
 import random
 
-def flatten_folders(folder, levels_num):
+def flatten_folders(folder, levels_num, prefix=''):
     subdir_names = os.listdir(folder)
     if levels_num == 2:
         for subdir_name in subdir_names:
             emails = os.listdir(os.path.join(folder, subdir_name))
             for email in emails:
                 shutil.move(os.path.join(folder, subdir_name, email),
-                            os.path.join(folder, subdir_name + '_' + email))
+                            os.path.join(folder, prefix + '_' + subdir_name + '_' + email))
     elif levels_num == 3:
         for subdir_name in subdir_names:
             subsubdir_names = os.listdir(os.path.join(folder, subdir_name))
@@ -18,7 +18,7 @@ def flatten_folders(folder, levels_num):
                 emails = os.listdir(os.path.join(folder, subdir_name, subsubdir_name))
                 for email in emails:
                     shutil.move(os.path.join(folder, subdir_name, subsubdir_name, email),
-                                os.path.join(folder, subdir_name + '_' + subsubdir_name + '_' + email))
+                                os.path.join(folder, prefix + '_' + subdir_name + '_' + subsubdir_name + '_' + email))
             for subsubdir_name in subsubdir_names:
                 shutil.rmtree(os.path.join(folder, subdir_name, subsubdir_name), ignore_errors=True)
     else:
@@ -53,15 +53,16 @@ def build_raw_dataset(build_config):
         file = tarfile.open(os.path.join(raw_files_path, file_name))
         file.extractall(res_dataset_folder_name)
         file.close()
-        src_folder_name = os.path.join(res_dataset_folder_name, file_name.split('.')[0])
+        src_dataset_name = file_name.split('.')[0]
+        src_folder_name = os.path.join(res_dataset_folder_name, src_dataset_name)
         print('unpacked to {}'.format(src_folder_name))
 
         # flatten inner folder structure - move all files to the source directory
         print('unpack files to one directory')
         if file_name == "BG.tar.gz":
-            flatten_folders(folder=src_folder_name, levels_num=3)
+            flatten_folders(folder=src_folder_name, levels_num=3, prefix=src_dataset_name)
         else:
-            flatten_folders(folder=src_folder_name, levels_num=2)
+            flatten_folders(folder=src_folder_name, levels_num=2, prefix=src_dataset_name)
 
         # separate all documents from the source folder into train and test
         documents = os.listdir(src_folder_name)
