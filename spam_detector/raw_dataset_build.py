@@ -13,7 +13,7 @@ def flatten_folders(folder, levels_num):
                             os.path.join(folder, subdir_name + '_' + email))
     elif levels_num == 3:
         for subdir_name in subdir_names:
-            subsubdir_names = os.listdir(subdir_name)
+            subsubdir_names = os.listdir(os.path.join(folder, subdir_name))
             for subsubdir_name in subsubdir_names:
                 emails = os.listdir(os.path.join(folder, subdir_name, subsubdir_name))
                 for email in emails:
