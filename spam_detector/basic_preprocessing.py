@@ -20,13 +20,16 @@ def preprocess_mails_in_folder(folder_path):
     print('Number of files in folder: {}'.format(len(all_files)))
     processed_num = 0
     for file_name in all_files:
-        if processed_num%100 == 0: print("{} files out of {}".format(
+        if processed_num%1000 == 0: print("{} files out of {}".format(
             processed_num, len(all_files)))
-        with open(os.path.join(folder_path, file_name), 'r') as f:
-            text = f.read()
-        preprocessed_text = preprocess_message_text(text)
-        preprocessed_text['message_id'] = file_name
-        df.append(preprocessed_text)
+        try:
+            with open(os.path.join(folder_path, file_name), 'r') as f:
+                text = f.read()
+            preprocessed_text = preprocess_message_text(text)
+            preprocessed_text['message_id'] = file_name
+            df.append(preprocessed_text)
+        except Exception():
+            print('Processing error: {}'.format(file_name))
         processed_num += 1
     print('Preparing dataframe')
     df = pd.DataFrame(df)
