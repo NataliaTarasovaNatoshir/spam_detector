@@ -46,7 +46,7 @@ def build_raw_dataset(build_config):
                 shutil.move(os.path.join(src_folder_name, group_name, doc_name),
                             os.path.join(res_dataset_folder_name, 'test', group_name, doc_name))
             print('move other files to train')
-            for doc_name in os.listdir(src_folder_name):
+            for doc_name in os.listdir(os.path.join(src_folder_name, group_name)):
                 shutil.move(os.path.join(src_folder_name, group_name, doc_name),
                             os.path.join(res_dataset_folder_name, 'train', group_name, doc_name))
         print('remove unpacked folder')
