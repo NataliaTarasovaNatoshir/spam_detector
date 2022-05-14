@@ -28,7 +28,7 @@ def preprocess_mails_in_folder(folder_path):
             preprocessed_text = preprocess_message_text(text)
             preprocessed_text['message_id'] = file_name
             df.append(preprocessed_text)
-        except Exception():
+        except Exception as e:
             print('Processing error: {}'.format(file_name))
         processed_num += 1
     print('Preparing dataframe')
