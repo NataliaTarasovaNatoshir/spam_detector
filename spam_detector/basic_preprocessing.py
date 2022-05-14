@@ -23,7 +23,7 @@ def preprocess_mails_in_folder(folder_path):
         if processed_num%1000 == 0: print("{} files out of {}".format(
             processed_num, len(all_files)))
         try:
-            with open(os.path.join(folder_path, file_name), 'r') as f:
+            with open(os.path.join(folder_path, file_name), 'r', encoding='cp1252') as f:
                 text = f.read()
             preprocessed_text = preprocess_message_text(text)
             preprocessed_text['message_id'] = file_name
