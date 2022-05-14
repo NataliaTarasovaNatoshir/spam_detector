@@ -3,36 +3,11 @@ import shutil
 import tarfile
 import random
 
-def flatten_folders(folder, levels_num, prefix=''):
-    subdir_names = os.listdir(folder)
-    if levels_num == 2:
-        for subdir_name in subdir_names:
-            emails = os.listdir(os.path.join(folder, subdir_name))
-            for email in emails:
-                shutil.move(os.path.join(folder, subdir_name, email),
-                            os.path.join(folder, prefix + '_' + subdir_name + '_' + email))
-    elif levels_num == 3:
-        for subdir_name in subdir_names:
-            subsubdir_names = os.listdir(os.path.join(folder, subdir_name))
-            for subsubdir_name in subsubdir_names:
-                emails = os.listdir(os.path.join(folder, subdir_name, subsubdir_name))
-                for email in emails:
-                    shutil.move(os.path.join(folder, subdir_name, subsubdir_name, email),
-                                os.path.join(folder, prefix + '_' + subdir_name + '_' + subsubdir_name + '_' + email))
-            for subsubdir_name in subsubdir_names:
-                shutil.rmtree(os.path.join(folder, subdir_name, subsubdir_name), ignore_errors=True)
-    else:
-        raise Exception("{} is not supported levels number for flattening. Available levels: 2, 3".format(levels_num))
-    for subdir_name in subdir_names:
-        shutil.rmtree(os.path.join(folder, subdir_name), ignore_errors=True)
-
 
 def build_raw_dataset(build_config):
     # define configuration
     res_dataset_folder_name = build_config['res_dataset_folder_name']
     raw_files_path = build_config['raw_files_folder']
-    ham_files = build_config['ham_files']
-    spam_files = build_config['spam_files']
     test_share = build_config['test_share']
 
     # prepare folder structure for dataset storage
@@ -57,35 +32,23 @@ def build_raw_dataset(build_config):
         src_folder_name = os.path.join(res_dataset_folder_name, src_dataset_name)
         print('unpacked to {}'.format(src_folder_name))
 
-        # flatten inner folder structure - move all files to the source directory
-        print('unpack files to one directory')
-        if file_name == "BG.tar.gz":
-            flatten_folders(folder=src_folder_name, levels_num=3, prefix=src_dataset_name)
-        else:
-            flatten_folders(folder=src_folder_name, levels_num=2, prefix=src_dataset_name)
+        # separate ham and spam documents from the source folder into train and test
+        for group_name in ('ham', 'spam'):
+            print('Separating {} files'.format(group_name))
+            documents = os.listdir(os.path.join(src_folder_name, group_name))
+            test_documents_num = int(len(documents) * test_share)
+            print("total number of {} documents = {}, test documents number = {}".format(
+                group_name, len(documents), test_documents_num))
 
-        # separate all documents from the source folder into train and test
-        documents = os.listdir(src_folder_name)
-        test_documents_num = int(len(documents) * test_share)
-        print("total number of documents = {}, test documents number = {}".format(
-            len(documents), test_documents_num))
-
-        if file_name in ham_files:
-            subdir_name = 'ham'
-        elif file_name in spam_files:
-            subdir_name = 'spam'
-        else:
-            raise Exception("Unknown file type. {} not in ham or spam group".format(file_name))
-
-        print('add documents to {}'.format(subdir_name))
-        print('move random sample to test')
-        for doc_name in random.sample(documents, test_documents_num):
-            shutil.move(os.path.join(src_folder_name, doc_name),
-                        os.path.join(res_dataset_folder_name, 'test', subdir_name, doc_name))
-        print('move other files to train')
-        for doc_name in os.listdir(src_folder_name):
-            shutil.move(os.path.join(src_folder_name, doc_name),
-                        os.path.join(res_dataset_folder_name, 'train', subdir_name, doc_name))
+            print('add documents to {}'.format(group_name))
+            print('move random sample to test')
+            for doc_name in random.sample(documents, test_documents_num):
+                shutil.move(os.path.join(src_folder_name, group_name, doc_name),
+                            os.path.join(res_dataset_folder_name, 'test', group_name, doc_name))
+            print('move other files to train')
+            for doc_name in os.listdir(src_folder_name):
+                shutil.move(os.path.join(src_folder_name, group_name, doc_name),
+                            os.path.join(res_dataset_folder_name, 'train', group_name, doc_name))
         print('remove unpacked folder')
         shutil.rmtree(src_folder_name, ignore_errors=True)
         print()
