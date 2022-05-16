@@ -4,5 +4,9 @@
     "raw_files_folder": "/content/drive/MyDrive/Colab Notebooks/Spam_Detector/Enron_raw_data/raw_files",
     "res_dataset_folder_name": "/content/drive/MyDrive/Colab Notebooks/Spam_Detector/Enron_raw_data/dataset",
     "test_share": 0.3
+  },
+  "testing":
+  {
+    "recall_level": 0.9
   }
 }
