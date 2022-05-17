@@ -8,8 +8,10 @@ from joblib import dump, load
 class BoWModel():
     def __init__(self, model_name='', vectorizer_params={}, classifier_params={}, load_from_file=False, filepath=None):
         if load_from_file:
+            print("Loading the model from {}".format(filepath))
             self.model_name = filepath.split('.')[-1]
             self.pipeline = load(filepath)
+            print('Model loaded successfully')
         else:
             self.model_name = model_name
             self.pipeline = Pipeline(
@@ -41,6 +43,8 @@ class BoWModel():
         return self.pipeline.predict_proba(X_valid_joined['joined_text'].values)[:,1]
 
     def dump(self, folder):
-        dump(self.pipeline, os.path.join(folder, self.model_name + '.joblib'))
+        filename = os.path.join(folder, self.model_name + '.joblib')
+        dump(self.pipeline, filename)
+        print('Model saved to {}'.format(filename))
 
 
