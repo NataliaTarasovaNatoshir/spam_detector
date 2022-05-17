@@ -7,6 +7,6 @@
   },
   "testing":
   {
-    "recall_level": 0.9
+    "recall_level": 0.99
   }
 }
