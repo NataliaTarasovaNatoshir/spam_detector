@@ -9,7 +9,7 @@ class BoWModel():
     def __init__(self, model_name='', vectorizer_params={}, classifier_params={}, load_from_file=False, filepath=None):
         if load_from_file:
             print("Loading the model from {}".format(filepath))
-            self.model_name = filepath.split('.')[-2]
+            self.model_name = filepath.split('.')[-2].split('/')[-1]
             self.pipeline = load(filepath)
             print('Model loaded successfully')
         else:
