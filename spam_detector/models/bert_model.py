@@ -185,7 +185,7 @@ class BERTModel():
             self.classifier_model = build_classifier_model()
             print('Model initiated successfully')
 
-    def train(self, X, y, epochs=5):
+    def train(self, X, y, epochs=3):
         print('Processing dataset for training')
         X_train_joined = X.copy()
         # fill empty values
