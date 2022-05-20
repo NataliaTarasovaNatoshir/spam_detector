@@ -154,7 +154,7 @@ map_model_to_preprocess = {
 
 
 class BERTModel():
-    def __init__(self, model_name, bert_model_name='small_bert/bert_en_uncased_L-4_H-512_A-8',
+    def __init__(self, model_name='', bert_model_name='small_bert/bert_en_uncased_L-4_H-512_A-8',
                  load_from_folder=False, folder=None):
         if load_from_folder:
             print("Loading the model from {}".format(folder))
