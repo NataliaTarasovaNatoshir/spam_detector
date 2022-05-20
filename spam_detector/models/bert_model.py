@@ -158,8 +158,8 @@ class BERTModel():
                  load_from_folder=False, folder=None):
         if load_from_folder:
             print("Loading the model from {}".format(folder))
-            self.model_name = folder.split('.')[-1]
-            self.classifier_model = tf.saved_model.load(folder)
+            self.model_name = folder.split('/')[-1]
+            self.classifier_model = tf.keras.models.load_model(folder)
             print('Model loaded successfully')
         else:
             self.model_name = model_name
