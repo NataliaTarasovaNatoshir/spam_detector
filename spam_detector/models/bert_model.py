@@ -7,6 +7,7 @@
 !pip install -q tf-models-official==2.7.0
 """
 import os
+import tensorflow_text as text
 import tensorflow as tf
 import tensorflow_hub as hub
 from official.nlp import optimization  # to create AdamW optimizer
