@@ -3,7 +3,8 @@ import pandas as pd
 from datetime import datetime
 from sklearn.metrics import roc_auc_score, precision_recall_curve, confusion_matrix
 
-def run_experiment(config, model_name, model):
+
+def run_experiment(config, model_name, model, return_predictions=False):
     print("Testing model {}\n".format(model_name))
     print("Loading test dataset")
     test = pd.read_csv(os.path.join(config['dataset_build']['res_dataset_folder_name'], 'test.csv'))
@@ -38,7 +39,12 @@ def run_experiment(config, model_name, model):
     print('At recall {0:.4f} precision = {1:.4f}\n'.format(selected_recall, selected_precision))
     print('Confusion matrix:\n{}'.format(confusion_matrix(y_true, y_pred >= selected_threshold)))
 
-    return {'model_name': model_name, 'test_dataset': {'size': len(test), 'spam_share': test['label'].mean()},
+    results = {'model_name': model_name, 'test_dataset': {'size': len(test), 'spam_share': test['label'].mean()},
             'runtime': {'total_runtime': runtime, 'runtime_per_1000': runtime_per_1000},
             'quality_metrics': {'roc_auc_score': roc_auc, 'threshold': selected_threshold,
                                 'precision': selected_precision, 'recall': selected_recall}}
+    if return_predictions:
+        results['predictions'] = y_pred
+        results['labels'] = y_true
+
+    return results
