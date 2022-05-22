@@ -198,7 +198,8 @@ class FunnelModel():
         y_pred_label = y_pred_bow >= self.bow_threshold
         use_bert_index = (y_pred_bow > self.bert_app_score_min) & (y_pred_bow <= self.bert_app_score_max)
         y_pred_bert = self.bert_model.predict(X.iloc[use_bert_index, :])
-        y_pred_label[use_bert_index] = y_pred_bert.numpy().flatten()
+        y_pred_label_bert = y_pred_bert.numpy().flatten() >= self.bert_threshold
+        y_pred_label[use_bert_index] = y_pred_label_bert
         return y_pred_label
 
     def dump(self, folder):
