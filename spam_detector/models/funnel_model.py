@@ -153,7 +153,7 @@ map_model_to_preprocess = {
 
 from spam_detector.models import bow_model, bert_model
 
-class BERTModel():
+class FunnelModel():
     def __init__(self, config, model_name='', load_from_folder=False, folder=None):
         self.bow_threshold = config["funnel_approach"]["bow_threshold"]
         self.bert_threshold = config["funnel_approach"]["bert_threshold"]
