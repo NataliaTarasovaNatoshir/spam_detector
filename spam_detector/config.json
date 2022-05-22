@@ -5,6 +5,16 @@
     "res_dataset_folder_name": "/content/drive/MyDrive/Colab Notebooks/Spam_Detector/Enron_raw_data/dataset",
     "test_share": 0.3
   },
+  "funnel_approach":
+  {
+    "bow_model_name": "bow",
+    "bert_model_name": "bert",
+    "bert_epochs_num": 5,
+    "bow_threshold": 0.5135137500040693,
+    "bert_threshold": 0.9992536,
+    "bert_app_score_min": 0.502,
+    "bert_app_score_max": 0.526
+  },
   "testing":
   {
     "recall_level": 0.99
