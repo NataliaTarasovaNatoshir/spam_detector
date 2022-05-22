@@ -151,7 +151,7 @@ map_model_to_preprocess = {
         'https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3',
 }
 
-import bow_model, bert_model
+from spam_detector.models import bow_model, bert_model
 
 class BERTModel():
     def __init__(self, config, model_name='', load_from_folder=False, folder=None):
